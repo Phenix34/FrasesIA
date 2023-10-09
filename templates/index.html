@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <style>
+        /* Apply the custom font to the entire page */
+        body {
+            font-family: 'Cinzel Decorative', sans-serif;
+            font-weight: bold;
+        }
+
+        /* Optionally, style specific elements with the custom font */
+        h1 {
+            font-family: 'Cinzel Decorative', sans-serif;
+            font-weight: bold;
+            font-size: 2rem; /* Adjust the font size as needed */
+        }
+
+        /* Add custom CSS styles for buttons and other elements here */
+
+        /* Responsive styles for mobile devices */
+        @media (max-width: 768px) {
+            .card {
+                padding: 20px; /* Increase padding to make the card larger */
+            }
+
+            h1 {
+                font-size: 1.5rem; /* Reduce the font size of h1 on mobile */
+            }
+        }
+    </style>
+    <title>Suerte de hoy</title>
+</head>
+<body>
+    <div class="container">
+        <h1 class="mt-5">Descubre el futuro que predice para ti la Inteligencia Artificial</h1>
+        <div class="card mt-4" style="background-color: rgb({{ random_color[0]*255 }}, {{ random_color[1]*255 }}, {{ random_color[2]*255 }});">
+            <div class="card-body text-center">
+                <p class="card-text" style="color: rgb({{ predicted_color[0]*255 }}, {{ predicted_color[1]*255 }}, {{ predicted_color[2]*255 }});">{{ random_phrase }}</p>
+            </div>
+        </div>
+        <h1 class="mt-5">¿Te gusto tu suerte de hoy?</h1>
+        <div class="d-flex justify-content-center mt-3">
+            <form method="POST" action="/like">
+                <input type="hidden" name="background_color" value="{{ random_color }}">
+                <input type="hidden" name="predicted_color" value="{{ predicted_color }}">
+                <input type="hidden" name="random_phrase" value="{{ random_phrase }}">
+                <button class="btn btn-success mr-2" type="submit"><i class="fas fa-thumbs-up thumbs-up-icon"></i></button>
+            </form>
+            
+            <form method="POST" action="/dislike">
+                <input type="hidden" name="background_color" value="{{ random_color }}">
+                <input type="hidden" name="predicted_color" value="{{ predicted_color }}">
+                <input type="hidden" name="random_phrase" value="{{ random_phrase }}">
+                <button class="btn btn-danger custom-dislike-button" type="submit"><i class="fas fa-thumbs-down thumbs-down-icon"></i></button>
+             </form>
+             
+            
+        </div>
+        
+    </div>
+    <script>
+        function likeColor() {
+            // Handle the "Like" button click here
+            alert('Liked!'); // You can replace this with your own logic
+        }
+
+        function dislikeColor() {
+            // Handle the "Dislike" button click here
+            alert('Disliked!'); // You can replace this with your own logic
+        }
+    </script>
+</body>
+</html>
