@@ -59,6 +59,7 @@ def like_color():
         'timestamp': timestamp,
         'action': 'like',
         'phrase_type': phrase_type,
+        'ip': user_ip,
         'city': user_city
     }
     
@@ -105,6 +106,7 @@ def dislike_color():
         'timestamp': timestamp,
         'action': 'like',
         'phrase_type': phrase_type,
+        'ip': user_ip,
         'city': user_city
     }
     
