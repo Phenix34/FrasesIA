@@ -50,18 +50,18 @@
                 <input type="hidden" name="background_color" value="{{ random_color }}">
                 <input type="hidden" name="predicted_color" value="{{ predicted_color }}">
                 <input type="hidden" name="random_phrase" value="{{ random_phrase }}">
-                <button class="btn btn-success mr-2" type="submit"><i class="fas fa-check check-icon"></i></button>
+                <button class="btn btn-success mr-2" type="submit"><i class="fas fa-thumbs-up thumbs-up-icon"></i></button>
             </form>
             
             <form method="POST" action="/dislike">
                 <input type="hidden" name="background_color" value="{{ random_color }}">
                 <input type="hidden" name="predicted_color" value="{{ predicted_color }}">
                 <input type="hidden" name="random_phrase" value="{{ random_phrase }}">
-                <button class="btn btn-danger" type="submit"><i class="fas fa-times cross-icon"></i></button>
+                <button class="btn btn-danger" type="submit"><i class="fas fa-thumbs-down thumbs-down-icon"></i></button>
             </form>
             
         </div>
-        <h1 class="mt-5">Te a gustado tu predicción</h1>
+        <h1 class="mt-5">¿Te a gustado tu predicción?</h1>
     </div>
     <script>
         function likeColor() {
