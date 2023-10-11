@@ -8,13 +8,14 @@ from flask import Flask, render_template, jsonify, request
 from pymongo import MongoClient
 from datetime import datetime
 import requests
+from werkzeug.middleware.proxy_fix import ProxyFix
 # Connect to MongoDB (replace with your connection details)
 client = MongoClient('mongodb+srv://rele:123@cluster0.u0z21ys.mongodb.net')
 db = client['tecnologiasEmergentes']
 collection = db['infopipol']
 
 app = Flask(__name__)
-
+app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1)
 
 # Load phrases from the text file into a list with UTF-8 encoding
 with open('frasesbuenas.txt', 'r', encoding='utf-8') as file:
@@ -41,7 +42,7 @@ def like_color():
         phrase_type = 'bad'
     
      # Get the user's IP address
-    user_ip = request.remote_addr
+    user_ip = request.headers.get('X-Forwarded-For', request.remote_addr)
     
     # Perform an IP geolocation lookup
     response = requests.get(f'http://ip-api.com/json/{user_ip}')
@@ -88,7 +89,7 @@ def dislike_color():
         phrase_type = 'bad'
     
      # Get the user's IP address
-    user_ip = request.remote_addr
+    user_ip = request.headers.get('X-Forwarded-For', request.remote_addr)
     
     # Perform an IP geolocation lookup
     response = requests.get(f'http://ip-api.com/json/{user_ip}')
