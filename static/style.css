@@ -1,0 +1,47 @@
+/* Apply the custom font to the entire page */
+body {
+    font-family: 'Cinzel Decorative', sans-serif;
+    font-weight: bold;
+}
+
+/* Optionally, style specific elements with the custom font */
+h1 {
+    font-family: 'Cinzel Decorative', sans-serif;
+    font-weight: bold;
+    font-size: 2rem; /* Adjust the font size as needed */
+}
+
+
+#container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 50px;
+}
+
+#background-color {
+    width: 200px;
+    height: 100px;
+}
+
+#text-color {
+    width: 200px;
+    height: 100px;
+}
+/* Add any custom CSS styles here */
+
+/* Example: */
+.container {
+    text-align: center;
+}
+
+.card {
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.btn {
+    font-size: 18px;
+}
