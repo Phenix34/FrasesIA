@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 from flask import Flask, render_template, jsonify, request
 from pymongo import MongoClient
 from datetime import datetime
+import requests
 # Connect to MongoDB (replace with your connection details)
 client = MongoClient('mongodb+srv://rele:123@cluster0.u0z21ys.mongodb.net')
 db = client['tecnologiasEmergentes']
@@ -43,7 +44,7 @@ def like_color():
     user_ip = request.remote_addr
     
     # Perform an IP geolocation lookup
-    response = request.get(f'http://ip-api.com/json/{user_ip}')
+    response = requests.get(f'http://ip-api.com/json/{user_ip}')
     
     if response.status_code == 200:
         data = response.json()
@@ -89,7 +90,7 @@ def dislike_color():
     user_ip = request.remote_addr
     
     # Perform an IP geolocation lookup
-    response = request.get(f'http://ip-api.com/json/{user_ip}')
+    response = requests.get(f'http://ip-api.com/json/{user_ip}')
     
     if response.status_code == 200:
         data = response.json()
