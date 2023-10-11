@@ -39,7 +39,17 @@ def like_color():
     elif random_phrase in phrasesm:
         phrase_type = 'bad'
     
+     # Get the user's IP address
+    user_ip = request.remote_addr
     
+    # Perform an IP geolocation lookup
+    response = requests.get(f'http://ip-api.com/json/{user_ip}')
+    
+    if response.status_code == 200:
+        data = response.json()
+        user_city = data.get('city', 'Unknown')
+    else:
+        user_city = 'Unknown'
     # Create a document to insert into MongoDB
     doc = {
         'background_color': background_color,
@@ -47,7 +57,8 @@ def like_color():
         'phrase': random_phrase,
         'timestamp': timestamp,
         'action': 'like',
-        'phrase_type': phrase_type
+        'phrase_type': phrase_type,
+        'city': user_city
     }
     
     # Insert the document into MongoDB
@@ -74,7 +85,17 @@ def dislike_color():
     elif random_phrase in phrasesm:
         phrase_type = 'bad'
     
+     # Get the user's IP address
+    user_ip = request.remote_addr
     
+    # Perform an IP geolocation lookup
+    response = requests.get(f'http://ip-api.com/json/{user_ip}')
+    
+    if response.status_code == 200:
+        data = response.json()
+        user_city = data.get('city', 'Unknown')
+    else:
+        user_city = 'Unknown'
     # Create a document to insert into MongoDB
     doc = {
         'background_color': background_color_rgb,
@@ -82,7 +103,8 @@ def dislike_color():
         'phrase': random_phrase,
         'timestamp': timestamp,
         'action': 'like',
-        'phrase_type': phrase_type
+        'phrase_type': phrase_type,
+        'city': user_city
     }
     
     # Insert the document into MongoDB
