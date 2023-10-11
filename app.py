@@ -43,7 +43,7 @@ def like_color():
     user_ip = request.remote_addr
     
     # Perform an IP geolocation lookup
-    response = requests.get(f'http://ip-api.com/json/{user_ip}')
+    response = request.get(f'http://ip-api.com/json/{user_ip}')
     
     if response.status_code == 200:
         data = response.json()
@@ -89,7 +89,7 @@ def dislike_color():
     user_ip = request.remote_addr
     
     # Perform an IP geolocation lookup
-    response = requests.get(f'http://ip-api.com/json/{user_ip}')
+    response = request.get(f'http://ip-api.com/json/{user_ip}')
     
     if response.status_code == 200:
         data = response.json()
