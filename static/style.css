@@ -1,0 +1,188 @@
+/* Apply the custom font to the entire page */
+body {
+    font-family: 'Cinzel Decorative', sans-serif;
+    font-weight: bold;
+}
+
+/* Optionally, style specific elements with the custom font */
+h1 {
+    font-family: 'Cinzel Decorative', sans-serif;
+    font-weight: bold;
+    font-size: 2rem; /* Adjust the font size as needed */
+}
+
+
+#container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 50px;
+}
+
+#background-color {
+    width: 200px;
+    height: 100px;
+}
+
+#text-color {
+    width: 200px;
+    height: 100px;
+}
+/* Add any custom CSS styles here */
+
+/* Example: */
+.container {
+    text-align: center;
+}
+
+.card {
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.btn {
+    font-size: 18px;
+}
+.wrapper {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(124deg, #ff2400, #e81d1d, #e8b71d, #e3e81d, #1de840, #1ddde8, #2b1de8, #dd00f3, #dd00f3);
+  background-size: 800% 800%; /* Adjust the background-size */
+  animation: rainbow 18s ease infinite;
+}
+
+@keyframes rainbow {
+  0% {
+      background-position: 0% 50%;
+  }
+  100% {
+      background-position: 100% 50%;
+  }
+}
+
+/* Keyframes for multiline typing animation */
+@keyframes typing {
+  from {
+      width: 0;
+  }
+}
+
+@keyframes blink {
+  50% {
+      border-color: transparent;
+  }
+}
+
+.texttitle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.typing-demo {
+  width: 100%;
+  max-width: 400px; /* Adjust the max-width as needed */
+  font-family: monospace;
+  font-size: 2em;
+  color: white;
+  text-align: center;
+  padding: 10px; /* Add padding to keep text within the container */
+}
+
+.line {
+  white-space: nowrap;
+  overflow: hidden;
+  border-right: 3px solid;
+}
+
+.line:nth-child(1) {
+  animation: typing 4s steps(22), blink 1s step-end infinite alternate;
+}
+
+.line:nth-child(2) {
+  animation: typing 8s steps(22), blink 1s step-end infinite alternate;
+}
+
+.line:nth-child(3) {
+  animation: typing 12s steps(22), blink 1s step-end infinite alternate;
+}
+
+
+
+button {
+    font-size: 1.5em; /* Adjust button font size */
+}
+
+
+
+
+  /* Style for the progress bar */
+  .progress-container {
+    width: 100%;
+    height: 30px;
+    background-color: #f3f3f3;
+    display: none; /* Initially hide the progress bar */
+}
+
+.progress-bar {
+    width: 0%;
+    height: 100%;
+    background-color: rgb(163, 3, 255);
+    text-align: center;
+    line-height: 30px;
+    color: rgb(0, 0, 0);
+}
+
+/* Common styles for all screen sizes */
+.texttitle {
+  text-align: center;
+}
+
+.texttitle h1 {
+
+  font-weight: bold;
+  font-size: 2rem;
+  color: white;
+}
+
+/* Responsive styles for mobile devices */
+@media (max-width: 768px) {
+  .texttitle h1 {
+      font-size: 2.5rem; /* Adjust the font size for mobile devices */
+  }
+}
+.custom-button {
+  background-color: black;
+  color: white;
+  font-family: monospace;
+  font-weight: bold;
+  font-size: 1.5rem;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.custom-button:hover {
+  background-color: #333; /* Darken the button on hover if desired */
+}
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Ensure the container takes up the full viewport height */
+  text-align: center; /* Center-align the button */
+  margin-top: -8vh;
+}
+
+
+
+

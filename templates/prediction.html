@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <style>
+        /* Apply the custom font to the entire page */
+        body {
+            
+            font-weight: bold;
+        }
+
+        /* Optionally, style specific elements with the custom font */
+        h1 {
+            
+            font-weight: bold;
+            font-size: 2rem; /* Adjust the font size as needed */
+            color: white;
+            font-family: monospace;
+        }
+
+        /* Add custom CSS styles for buttons and other elements here */
+
+        /* Responsive styles for mobile devices */
+        @media (max-width: 768px) {
+            .card {
+                width: 100%; /* Increase padding to make the card larger */
+            }
+
+            h1 {
+                font-size: 1.5rem; /* Reduce the font size of h1 on mobile */
+            }
+        }
+    </style>
+    <title>Suerte de hoy</title>
+</head>
+<div >
+<body style="background-color: rgb({{ random_color[0]*255 }}, {{ random_color[1]*255 }}, {{ random_color[2]*255 }});">
+    <div class="container">
+        
+                <h1 class="card-text" style="color: rgb({{ predicted_color[0]*255 }}, {{ predicted_color[1]*255 }}, {{ predicted_color[2]*255 }});">{{ random_phrase }}</h1>
+                <div class="d-flex justify-content-center mt-3">
+            
+                    <form method="POST" action="/like" id="like-button">
+                        <input type="hidden" name="background_color" value="{{ random_color }}">
+                        <input type="hidden" name="predicted_color" value="{{ predicted_color }}">
+                        <input type="hidden" name="random_phrase" value="{{ random_phrase }}">
+                        <button class="btn btn-success btn-lg mr-2" style="background-color: black;">
+                            <i class="fas fa-thumbs-up" style="color: white;"></i>
+                        </button>
+                    </form>
+                    
+                    <form method="POST" action="/dislike" id="dislike-button">
+                        <input type="hidden" name="background_color" value="{{ random_color }}">
+                        <input type="hidden" name="predicted_color" value="{{ predicted_color }}">
+                        <input type="hidden" name="random_phrase" value="{{ random_phrase }}">
+                        <button class="btn btn-danger btn-lg ml-2" style="background-color: black;">
+                            <i class="fas fa-thumbs-down" style="color: white;"></i>
+                        </button>
+                    </form>
+                     
+                    <button id="share-button" href="/" class="custom-button" style="display: none">NUEVA SUERTE</button>
+                    
+                    
+                </div>
+                <h1 id="prediction-question" class="mt-5" style="color: rgb({{ predicted_color[0]*255 }}, {{ predicted_color[1]*255 }}, {{ predicted_color[2]*255 }});">¿Te ha gustado tu predicción?</h1>
+               
+            </div>
+            
+        </div>
+        
+        
+       
+    </div>
+    <script src="/static/share.js"></script>
+</body>
+</div>
+</html>

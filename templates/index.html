@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <style>
+        /* Apply the custom font to the entire page */
+        body {
+            
+            font-weight: bold;
+        }
+
+        /* Optionally, style specific elements with the custom font */
+        h1 {
+            
+            font-weight: bold;
+            font-size: 2rem; /* Adjust the font size as needed */
+            color: white;
+            font-family: monospace;
+        }
+
+        /* Add custom CSS styles for buttons and other elements here */
+
+        /* Responsive styles for mobile devices */
+        @media (max-width: 768px) {
+            .card {
+                width: 100%; /* Increase padding to make the card larger */
+            }
+
+            h1 {
+                font-size: 1.5rem; /* Reduce the font size of h1 on mobile */
+            }
+        }
+    </style>
+    <title>Suerte de hoy</title>
+</head>
+<div class="wrapper">
+<body>
+    <div class="container">
+        <div class="texttitle">
+            <div class="typing-demo">
+                <h1 class="mt-5">
+                    Descubre tu suerte
+                    el día de hoy
+                    predicha por Inteligencia Artificial
+                </h1>
+        </div>
+        <button class="custom-button" id="custom-button" onclick="startProgress()">EMPEZAR</button>
+
+
+    
+    <div class="progress-container" id="progress-container">
+        <div class="progress-bar" id="progress-bar" style="background-color: rgb(0, 0, 0);"></div>
+        <div class="phrases-container" id="phrases-container" style="color: white;"></div>
+    </div>
+<script src="/static/progressbar.js"></script>
+    
+    </div>
+   
+</body>
+</div>
+</html>
