@@ -54,14 +54,14 @@ def like_color():
         user_city = 'Unknown'
     # Create a document to insert into MongoDB
     doc = {
-        'background_color': background_color_rgb,
-        'text_color': predicted_color_rgb,
+        'background_color': background_color,
+        'text_color': predicted_color,
         'phrase': random_phrase,
         'timestamp': timestamp,
         'action': 'like',
         'ip': user_ip,
-        'phrase_type': phrase_type,
-        'city': user_city
+        'phrase_type': phrase_type
+        
     }
     
     # Insert the document into MongoDB
@@ -101,13 +101,13 @@ def dislike_color():
         user_city = 'Unknown'
     # Create a document to insert into MongoDB
     doc = {
-        'background_color': background_color_rgb,
-        'text_color': predicted_color_rgb,
+        'background_color': background_color,
+        'text_color': predicted_color,
         'phrase': random_phrase,
         'timestamp': timestamp,
         'action': 'like',
-        'phrase_type': phrase_type,
-        'city': user_city
+        'phrase_type': phrase_type
+        
     }
     
     # Insert the document into MongoDB
