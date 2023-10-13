@@ -43,9 +43,10 @@ def like_color():
     
      # Get the user's IP address
     user_ip = request.headers.get('X-Forwarded-For', request.remote_addr)
-    
+    ip_list = user_ip.split(',')
+    first_ip = ip_list[0].strip() 
     # Perform an IP geolocation lookup
-    response = requests.get(f'http://ip-api.com/json/{user_ip}')
+    response = requests.get(f'http://ip-api.com/json/{first_ip}')
     
     if response.status_code == 200:
         data = response.json()
@@ -60,7 +61,8 @@ def like_color():
         'timestamp': timestamp,
         'action': 'like',
         'ip': user_ip,
-        'phrase_type': phrase_type
+        'phrase_type': phrase_type,
+        'city': user_city
         
     }
     
@@ -90,9 +92,10 @@ def dislike_color():
     
      # Get the user's IP address
     user_ip = request.remote_addr
-    
+    ip_list = user_ip.split(',')
+    first_ip = ip_list[0].strip() 
     # Perform an IP geolocation lookup
-    response = requests.get(f'http://ip-api.com/json/{user_ip}')
+    response = requests.get(f'http://ip-api.com/json/{first_ip}')
     
     if response.status_code == 200:
         data = response.json()
@@ -106,7 +109,8 @@ def dislike_color():
         'phrase': random_phrase,
         'timestamp': timestamp,
         'action': 'like',
-        'phrase_type': phrase_type
+        'phrase_type': phrase_type,
+        'city': user_city
         
     }
     
