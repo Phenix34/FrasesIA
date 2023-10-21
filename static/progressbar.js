@@ -1,12 +1,39 @@
+let partnerAnswer = null; // Variable to store the partner answer
+
+    // Add event listeners to radio buttons to capture the answer
+    document.getElementById("partner-yes").addEventListener("change", function() {
+        partnerAnswer = "yes";
+        enableEmpezarButton();
+    });
+
+    document.getElementById("partner-no").addEventListener("change", function() {
+        partnerAnswer = "no";
+        enableEmpezarButton();
+    });
+const partnerForm = document.getElementById("partner-form");
+            const empezarButton = document.getElementById("custom-button");
+
+            partnerForm.addEventListener("change", function() {
+                const partnerYes = document.getElementById("partner-yes");
+                const partnerNo = document.getElementById("partner-no");
+
+                if (partnerYes.checked || partnerNo.checked) {
+                    empezarButton.removeAttribute("disabled");
+                } else {
+                    empezarButton.setAttribute("disabled", "true");
+                }
+            });
+
 function startProgress() {
+    const partnerAnswer = getPartnerAnswer();
     const progressBar = document.getElementById("progress-bar");
     const progressContainer = document.getElementById("progress-container");
     const phrasesContainer = document.getElementById("phrases-container");
-
+    const partnerForm = document.getElementById("partner-form");
     // Hide the start button
     const startButton = document.querySelector("button");
     startButton.style.display = "none";
-
+    partnerForm.style.display = "none";
     // Show the progress bar
     progressContainer.style.display = "block";
 
@@ -31,7 +58,7 @@ function startProgress() {
         if (width >= 100) {
             clearInterval(interval);
             // Redirect to /futuro when progress is complete
-            window.location.href = "/futuro";
+            window.location.href = `/futuro?partnerAnswer=${partnerAnswer}`;
             startButton.style.display = "block";
             width = 0;
             progressBar.style.width = width + "%";
@@ -43,5 +70,23 @@ function startProgress() {
             phraseIndex = (phraseIndex + 1) % phrases.length;
             phrasesContainer.innerText = phrases[phraseIndex];
         }
-    }, 77);
+    }, 40);
 }
+function getPartnerAnswer() {
+    const partnerYes = document.getElementById("partner-yes");
+    const partnerNo = document.getElementById("partner-no");
+
+    if (partnerYes.checked) {
+        return "yes";
+    } else if (partnerNo.checked) {
+        return "no";
+    } else {
+        return null;
+    }
+}
+document.addEventListener('DOMContentLoaded', function () {
+    document.getElementById('custom-button').addEventListener('click', function () {
+        const partnerAnswer = document.querySelector('input[name="partnerAnswer"]:checked').value;
+        // Send selectedPartnerValue to the server or store it where needed
+    });
+});

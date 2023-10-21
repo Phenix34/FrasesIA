@@ -40,16 +40,17 @@
     <title>Suerte de hoy</title>
 </head>
 <div >
-<body style="background-color: rgb({{ random_color[0]*255 }}, {{ random_color[1]*255 }}, {{ random_color[2]*255 }});">
+<body style="background-color: rgb({{ random_color[0] }}, {{ random_color[1] }}, {{ random_color[2] }});">
     <div class="container">
         
-                <h1 class="card-text" style="color: rgb({{ predicted_color[0]*255 }}, {{ predicted_color[1]*255 }}, {{ predicted_color[2]*255 }});">{{ random_phrase }}</h1>
+                <h1 class="card-text" style="color: rgb({{ predicted_color[0] }}, {{ predicted_color[1] }}, {{ predicted_color[2] }});">{{ random_phrase }}</h1>
                 <div class="d-flex justify-content-center mt-3">
             
                     <form method="POST" action="/like" id="like-button">
                         <input type="hidden" name="background_color" value="{{ random_color }}">
                         <input type="hidden" name="predicted_color" value="{{ predicted_color }}">
                         <input type="hidden" name="random_phrase" value="{{ random_phrase }}">
+                        <input type="hidden" name="partnerAnswer" value="{{ partnerAnswer }}">
                         <button class="btn btn-success btn-lg mr-2" style="background-color: black;">
                             <i class="fas fa-thumbs-up" style="color: white;"></i>
                         </button>
@@ -59,6 +60,7 @@
                         <input type="hidden" name="background_color" value="{{ random_color }}">
                         <input type="hidden" name="predicted_color" value="{{ predicted_color }}">
                         <input type="hidden" name="random_phrase" value="{{ random_phrase }}">
+                        <input type="hidden" name="partner_answer" value="{{ partner_answer }}">
                         <button class="btn btn-danger btn-lg ml-2" style="background-color: black;">
                             <i class="fas fa-thumbs-down" style="color: white;"></i>
                         </button>
@@ -68,7 +70,7 @@
                     
                     
                 </div>
-                <h1 id="prediction-question" class="mt-5" style="color: rgb({{ predicted_color[0]*255 }}, {{ predicted_color[1]*255 }}, {{ predicted_color[2]*255 }});">¿Te ha gustado tu predicción?</h1>
+                <h1 id="prediction-question" class="mt-5" style="color: rgb({{ predicted_color[0] }}, {{ predicted_color[1] }}, {{ predicted_color[2] }});">¿Te ha gustado tu predicción?</h1>
                
             </div>
             

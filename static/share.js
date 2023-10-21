@@ -18,3 +18,12 @@ shareButton.addEventListener('click', function() {
 // Add click event listeners to the like and dislike buttons
 likeButton.addEventListener('click', toggleButtons);
 dislikeButton.addEventListener('click', toggleButtons);
+// Check if the page is being reloaded or refreshed
+if (performance.navigation.type === 1) {
+    // Page is being refreshed, so perform the redirection
+    window.location.href = "/"; // Replace with the URL you want to redirect to
+}
+
+
+
+        

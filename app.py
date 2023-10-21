@@ -5,14 +5,18 @@ import numpy as np
 import random
 import matplotlib.pyplot as plt
 from flask import Flask, render_template, jsonify, request,redirect,url_for
-from pymongo import MongoClient
 from datetime import datetime
 import requests
 from werkzeug.middleware.proxy_fix import ProxyFix
-# Connect to MongoDB (replace with your connection details)
-client = MongoClient('mongodb+srv://rele:123@cluster0.u0z21ys.mongodb.net')
-db = client['tecnologiasEmergentes']
-collection = db['infopipol']
+import firebase_admin
+from firebase_admin import credentials
+from firebase_admin import db
+import itertools
+from flask import session
+cred = credentials.Certificate('frases-d0c4a-firebase-adminsdk-pouqr-d21029a1af.json')
+firebase_admin.initialize_app(cred, {
+    'databaseURL': 'https://frases-d0c4a-default-rtdb.firebaseio.com/'
+})
 
 app = Flask(__name__)
 app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1)
@@ -24,115 +28,142 @@ with open('frasesbuenas.txt', 'r', encoding='utf-8') as file:
 with open('frasesmalas.txt', 'r', encoding='utf-8') as file:
     phrasesm = [line.strip() for line in file]
 @app.route('/like', methods=['POST'])
+@app.route('/like', methods=['POST'])
 def like_color():
-    # Get the background color, predicted color, and random phrase
     background_color = request.form.get('background_color')
     predicted_color = request.form.get('predicted_color')
     random_phrase = request.form.get('random_phrase')
-    # Convert background_color and predicted_color to RGB format
-    background_color_rgb = f'rgb({background_color[0]}, {background_color[1]}, {background_color[2]})'
-    predicted_color_rgb = f'rgb({predicted_color[0]}, {predicted_color[1]}, {predicted_color[2]})'
-    # Get the current timestamp
     timestamp = datetime.now()
-    
-    # Check if the random phrase is from 'prasesb' (good phrases) or 'prasesm' (bad phrases)
+
+    # Check if the random phrase is from 'phrasesb' (good phrases) or 'phrasesm' (bad phrases)
     if random_phrase in phrasesb:
         phrase_type = 'good'
     elif random_phrase in phrasesm:
         phrase_type = 'bad'
-    
-     # Get the user's IP address
+
     user_ip = request.headers.get('X-Forwarded-For', request.remote_addr)
     ip_list = user_ip.split(',')
-    first_ip = ip_list[0].strip() 
-    # Perform an IP geolocation lookup
+    first_ip = ip_list[0].strip()
+
     response = requests.get(f'http://ip-api.com/json/{first_ip}')
-    
+    user_city = 'Unknown'
     if response.status_code == 200:
         data = response.json()
         user_city = data.get('city', 'Unknown')
-    else:
-        user_city = 'Unknown'
-    # Create a document to insert into MongoDB
+    answer = [
+        "yes",
+        "no"
+    ]
+    partner_answer = random.choice(answer) 
+    # Create a document to insert into Firebase
     doc = {
         'background_color': background_color,
         'text_color': predicted_color,
         'phrase': random_phrase,
-        'timestamp': timestamp,
+        'timestamp': timestamp.isoformat(),
         'action': 'like',
         'ip': user_ip,
         'phrase_type': phrase_type,
-        'city': user_city
-        
+        'city': user_city,
+        'pareja': partner_answer
     }
-    
-    # Insert the document into MongoDB
-    collection.insert_one(doc)
-    
+
+    # Push the document to Firebase
+    ref = db.reference('Datos')
+    ref.push(doc)
+
     # Handle any additional logic here
     return ('', 204)
 
 @app.route('/dislike', methods=['POST'])
 def dislike_color():
-    # Get the background color, predicted color, and random phrase
     background_color = request.form.get('background_color')
     predicted_color = request.form.get('predicted_color')
     random_phrase = request.form.get('random_phrase')
-    # Convert background_color and predicted_color to RGB format
-    background_color_rgb = f'rgb({background_color[0]}, {background_color[1]}, {background_color[2]})'
-    predicted_color_rgb = f'rgb({predicted_color[0]}, {predicted_color[1]}, {predicted_color[2]})'
-    # Get the current timestamp
     timestamp = datetime.now()
-    
-    # Check if the random phrase is from 'prasesb' (good phrases) or 'prasesm' (bad phrases)
+
     if random_phrase in phrasesb:
         phrase_type = 'good'
     elif random_phrase in phrasesm:
         phrase_type = 'bad'
-    
-     # Get the user's IP address
+
     user_ip = request.remote_addr
     ip_list = user_ip.split(',')
-    first_ip = ip_list[0].strip() 
-    # Perform an IP geolocation lookup
+    first_ip = ip_list[0].strip()
+
     response = requests.get(f'http://ip-api.com/json/{first_ip}')
-    
+    user_city = 'Unknown'
     if response.status_code == 200:
         data = response.json()
         user_city = data.get('city', 'Unknown')
-    else:
-        user_city = 'Unknown'
-    # Create a document to insert into MongoDB
+    answer = [
+        "yes",
+        "no"
+    ]
+    partner_answer = random.choice(answer)     
     doc = {
         'background_color': background_color,
         'text_color': predicted_color,
         'phrase': random_phrase,
-        'timestamp': timestamp,
-        'action': 'like',
+        'timestamp': timestamp.isoformat(),
+        'action': 'dislike',
         'phrase_type': phrase_type,
-        'city': user_city
-        
+        'city': user_city,
+        'pareja': partner_answer
     }
-    
-    # Insert the document into MongoDB
-    collection.insert_one(doc)
-    
+
+    ref = db.reference('Datos')
+    ref.push(doc)
+
     # Handle any additional logic here
     return ('', 204)
-@app.route('/')
-def index():
-    # Generate a random background color from the seven rainbow colors
-    rainbow_colors = [
-        [255, 128, 0],   # Orange
+class CustomRandomColor:
+    def __init__(self, colors):
+        self.colors = colors
+        self.color_iterator = itertools.cycle(colors)
+
+    def get_random_color(self):
+        return next(self.color_iterator)
+colors = [
+        [255, 103, 0],   # Orange
         [255, 0, 0],     # Red
         [255, 255, 0],   # Yellow
         [0, 255, 0],     # Green
         [0, 0, 255],     # Blue
         [75, 0, 130],    # Indigo
-        [148, 0, 211]    # Violet
+        [238,130,238],    # Violet
+        
     ]
+class ColorPicker:
+    def __init__(self):
+        self.colors = [
+            [255, 128, 0],   # Orange
+            [255, 0, 0],     # Red
+            [255, 255, 0],   # Yellow
+            [0, 255, 0],     # Green
+            [0, 0, 255],     # Blue
+            [75, 0, 130],    # Indigo
+            [238,130,238]    # Violet
+        ]
+        random.shuffle(self.colors)
+        self.color_index = 0
 
-    random_background_color = random.choice(rainbow_colors)
+    def get_next_color(self):
+        color = self.colors[self.color_index]
+        self.color_index = (self.color_index + 1) % len(self.colors)
+        return color
+
+# Initialize the ColorPicker
+color_picker = ColorPicker()
+# Create an instance of the custom random color generator
+color_generator = CustomRandomColor(colors)
+@app.route('/')
+def index():
+    # Generate a random background color from the seven rainbow colors
+    random_background_color = color_picker.get_next_color()
+    if request.method == 'POST':
+        partner_answer = request.form.get('partnerAnswer')
+        session['partner_answer'] = partner_answer
 
     # Use the trained model to predict text color
     #random_background_color_tensor = torch.tensor(random_background_color, dtype=torch.float32)
@@ -140,7 +171,8 @@ def index():
     #predicted_text_color = predicted_text_color_tensor.tolist()
 # Generate random text color 
     
-    predicted_text_color = random.choice(rainbow_colors)
+    predicted_text_color = color_picker.get_next_color()
+
     # Choose a random phrase from either 'phrasesb' or 'phrasesm' at random
     if random.randint(0, 1) == 0:
         random_phrase = random.choice(phrasesb)
@@ -148,20 +180,16 @@ def index():
         random_phrase = random.choice(phrasesm)
 
     return render_template('index.html', random_color=random_background_color, predicted_color=predicted_text_color, random_phrase=random_phrase)
-@app.route('/futuro')
+@app.route('/futuro', methods=['GET', 'POST'])
 def prediction():
-    # Generate a random background color from the seven rainbow colors
-    rainbow_colors = [
-        [255, 128, 0],   # Orange
-        [255, 0, 0],     # Red
-        [255, 255, 0],   # Yellow
-        [0, 255, 0],     # Green
-        [0, 0, 255],     # Blue
-        [75, 0, 130],    # Indigo
-        [148, 0, 211]    # Violet
-    ]
+    partner_answer = None
 
-    random_background_color = random.choice(rainbow_colors)
+    if request.method == 'POST':
+        # Capture the selected partner answer from the form
+        partner_answer = request.form.get('partner')
+
+    random_background_color = color_picker.get_next_color()
+    
 
     # Use the trained model to predict text color
     #random_background_color_tensor = torch.tensor(random_background_color, dtype=torch.float32)
@@ -169,15 +197,18 @@ def prediction():
     #predicted_text_color = predicted_text_color_tensor.tolist()
 # Generate random text color 
     
-    predicted_text_color = random.choice(rainbow_colors)
+    predicted_text_color = color_picker.get_next_color()
+
     # Choose a random phrase from either 'phrasesb' or 'phrasesm' at random
     if random.randint(0, 1) == 0:
         random_phrase = random.choice(phrasesb)
     else:
         random_phrase = random.choice(phrasesm)
-    
-    return render_template('prediction.html', random_color=random_background_color, predicted_color=predicted_text_color, random_phrase=random_phrase)
-    
+    if request.referrer is None:
+        return redirect(url_for('index'))  # Redirect to the root URL
+    else:
+        # Continue with normal rendering for non-direct access
+        return render_template('prediction.html', random_color=random_background_color, predicted_color=predicted_text_color, random_phrase=random_phrase,partner_answer=partner_answer)
     
 if __name__ == '__main__':
     app.run(debug=True)

@@ -183,6 +183,48 @@ button {
   margin-top: -8vh;
 }
 
+ /* Apply custom styles to the form */
+ #partner-form {
+  background-color: #000000;
+  padding: 20px;
+  margin-top: 20px;
+}
+
+#partner-question {
+  font-weight: bold;
+}
+
+/* Style for radio buttons and labels */
 
 
+input[type="radio"] + label {
+cursor: pointer;
+position: relative;
+padding-left: 25px;
+margin-right: 15px;
+}
+
+input[type="radio"] + label::before {
+content: "";
+position: absolute;
+left: 0;
+top: 2px;
+width: 15px;
+height: 15px;
+border: 2px solid #007BFF;
+border-radius: 50%;
+}
+
+input[type="radio"]:checked + label::before {
+background-color: #007BFF;
+border: 2px solid #007BFF;
+
+}
+
+    /* Style for the disabled button */
+    #custom-button[disabled] {
+        background-color: #ccc; /* Change the background color to gray */
+        color: #888; /* Change the text color to a lighter gray */
+        cursor: not-allowed; /* Change the cursor to indicate it's not clickable */
+    }
 
