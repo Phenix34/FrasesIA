@@ -33,6 +33,7 @@ def like_color():
     background_color = request.form.get('background_color')
     predicted_color = request.form.get('predicted_color')
     random_phrase = request.form.get('random_phrase')
+    random_button_color = request.form.get('random_button_color')
     timestamp = datetime.now()
 
     # Check if the random phrase is from 'phrasesb' (good phrases) or 'phrasesm' (bad phrases)
@@ -65,7 +66,8 @@ def like_color():
         'ip': user_ip,
         'phrase_type': phrase_type,
         'city': user_city,
-        'pareja': partner_answer
+        'pareja': partner_answer,
+        'random_button_color': random_button_color
     }
 
     # Push the document to Firebase
@@ -80,6 +82,7 @@ def dislike_color():
     background_color = request.form.get('background_color')
     predicted_color = request.form.get('predicted_color')
     random_phrase = request.form.get('random_phrase')
+    random_button_color = request.form.get('random_button_color')
     timestamp = datetime.now()
 
     if random_phrase in phrasesb:
@@ -109,7 +112,8 @@ def dislike_color():
         'action': 'dislike',
         'phrase_type': phrase_type,
         'city': user_city,
-        'pareja': partner_answer
+        'pareja': partner_answer,
+        'random_button_color': random_button_color
     }
 
     ref = db.reference('Datos')
@@ -189,8 +193,7 @@ def prediction():
         partner_answer = request.form.get('partner')
 
     random_background_color = color_picker.get_next_color()
-    
-
+    random_button_color = color_picker.get_next_color()
     # Use the trained model to predict text color
     #random_background_color_tensor = torch.tensor(random_background_color, dtype=torch.float32)
     #predicted_text_color_tensor = model(random_background_color_tensor)
@@ -208,7 +211,7 @@ def prediction():
         return redirect(url_for('index'))  # Redirect to the root URL
     else:
         # Continue with normal rendering for non-direct access
-        return render_template('prediction.html', random_color=random_background_color, predicted_color=predicted_text_color, random_phrase=random_phrase,partner_answer=partner_answer)
+        return render_template('prediction.html', random_color=random_background_color, predicted_color=predicted_text_color, random_phrase=random_phrase,partner_answer=partner_answer,random_button_color=random_button_color)
     
 if __name__ == '__main__':
     app.run(debug=True)
