@@ -30,10 +30,10 @@ with open('frasesmalas.txt', 'r', encoding='utf-8') as file:
 @app.route('/like', methods=['POST'])
 @app.route('/like', methods=['POST'])
 def like_color():
-    background_color = request.form.get('background_color')
-    predicted_color = request.form.get('predicted_color')
+    background_color =  get_color_name(request.form.get('background_color'))
+    predicted_color =  get_color_name(request.form.get('predicted_color'))
     random_phrase = request.form.get('random_phrase')
-    random_button_color = request.form.get('random_button_color')
+    random_button_color =  get_color_name(request.form.get('random_button_color'))
     timestamp = datetime.now()
 
     # Check if the random phrase is from 'phrasesb' (good phrases) or 'phrasesm' (bad phrases)
@@ -61,7 +61,7 @@ def like_color():
         'background_color': background_color,
         'text_color': predicted_color,
         'phrase': random_phrase,
-        'timestamp': timestamp.isoformat(),
+        'timestamp': datetime.now().strftime('%d/%m/%Y %H:%M'),
         'action': 'like',
         'ip': user_ip,
         'phrase_type': phrase_type,
@@ -79,10 +79,10 @@ def like_color():
 
 @app.route('/dislike', methods=['POST'])
 def dislike_color():
-    background_color = request.form.get('background_color')
-    predicted_color = request.form.get('predicted_color')
+    background_color = get_color_name(request.form.get('background_color'))
+    predicted_color =  get_color_name(request.form.get('predicted_color'))
     random_phrase = request.form.get('random_phrase')
-    random_button_color = request.form.get('random_button_color')
+    random_button_color =  get_color_name(request.form.get('random_button_color'))
     timestamp = datetime.now()
 
     if random_phrase in phrasesb:
@@ -108,7 +108,7 @@ def dislike_color():
         'background_color': background_color,
         'text_color': predicted_color,
         'phrase': random_phrase,
-        'timestamp': timestamp.isoformat(),
+        'timestamp': datetime.now().strftime('%d/%m/%Y %H:%M'),
         'action': 'dislike',
         'phrase_type': phrase_type,
         'city': user_city,
@@ -129,15 +129,42 @@ class CustomRandomColor:
     def get_random_color(self):
         return next(self.color_iterator)
 colors = [
-        [255, 103, 0],   # Orange
-        [255, 0, 0],     # Red
-        [255, 255, 0],   # Yellow
-        [0, 255, 0],     # Green
-        [0, 0, 255],     # Blue
-        [75, 0, 130],    # Indigo
-        [238,130,238],    # Violet
+        (255, 103, 0),   # Orange
+        (255, 0, 0),     # Red
+        (255, 255, 0),   # Yellow
+        (0, 255, 0),     # Green
+        (0, 0, 255),     # Blue
+        (75, 0, 130),    # Indigo
+        (238,130,238),    # Violet
         
     ]
+color_names = {
+    tuple([255, 103, 0]): 'Naranja',
+    tuple([255, 0, 0]): 'Rojo',
+    tuple([255, 255, 0]): 'Amarillo',
+    tuple([0, 255, 0]): 'Verde',
+    tuple([0, 0, 255]): 'Azul',
+    tuple([75, 0, 130]): 'Indigo',
+    tuple([238, 130, 238]): 'Violeta',
+}
+
+def get_color_name(rgb):
+    # Convert the string representation to a list
+    rgb_list = eval(rgb)
+
+    for color, name in color_names.items():
+        print(f"Comparing {color} with {rgb_list}")
+        if color == tuple(rgb_list):
+            return name
+
+    return 'Unknown'
+
+
+
+    
+ # Return 'Unknown' if the RGB value is not found in the dictionary
+
+
 class ColorPicker:
     def __init__(self):
         self.colors = [
