@@ -79,18 +79,19 @@ def like_color():
 
 @app.route('/dislike', methods=['POST'])
 def dislike_color():
-    background_color = get_color_name(request.form.get('background_color'))
+    background_color =  get_color_name(request.form.get('background_color'))
     predicted_color =  get_color_name(request.form.get('predicted_color'))
     random_phrase = request.form.get('random_phrase')
     random_button_color =  get_color_name(request.form.get('random_button_color'))
     timestamp = datetime.now()
 
+    # Check if the random phrase is from 'phrasesb' (good phrases) or 'phrasesm' (bad phrases)
     if random_phrase in phrasesb:
         phrase_type = 'good'
     elif random_phrase in phrasesm:
         phrase_type = 'bad'
 
-    user_ip = request.remote_addr
+    user_ip = request.headers.get('X-Forwarded-For', request.remote_addr)
     ip_list = user_ip.split(',')
     first_ip = ip_list[0].strip()
 
@@ -103,19 +104,22 @@ def dislike_color():
         "yes",
         "no"
     ]
-    partner_answer = random.choice(answer)     
+    partner_answer = random.choice(answer) 
+    # Create a document to insert into Firebase
     doc = {
         'background_color': background_color,
         'text_color': predicted_color,
         'phrase': random_phrase,
         'timestamp': datetime.now().strftime('%d/%m/%Y %H:%M'),
         'action': 'dislike',
+        'ip': user_ip,
         'phrase_type': phrase_type,
         'city': user_city,
         'pareja': partner_answer,
         'random_button_color': random_button_color
     }
 
+    # Push the document to Firebase
     ref = db.reference('Datos')
     ref.push(doc)
 
@@ -157,7 +161,7 @@ def get_color_name(rgb):
         if color == tuple(rgb_list):
             return name
 
-    return 'Unknown'
+    return 'Naranja'
 
 
 
@@ -168,7 +172,7 @@ def get_color_name(rgb):
 class ColorPicker:
     def __init__(self):
         self.colors = [
-            [255, 128, 0],   # Orange
+            [255, 103, 0],   # Orange
             [255, 0, 0],     # Red
             [255, 255, 0],   # Yellow
             [0, 255, 0],     # Green
